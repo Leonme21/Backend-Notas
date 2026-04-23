@@ -27,6 +27,24 @@ router.post('/', estudianteController.registrarEstudiante);
 
 /**
  * @swagger
+ * /api/estudiantes:
+ *   get:
+ *     summary: Busca estudiantes por nombre usando query params (?nombre=...)
+ *     tags: [Estudiantes]
+ *     parameters:
+ *       - in: query
+ *         name: nombre
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de estudiantes encontrados
+ */
+router.get('/', estudianteController.listarEstudiantes);
+
+
+/**
+ * @swagger
  * /api/estudiantes/{cedula}:
  *   get:
  *     summary: Obtiene información y notas del estudiante

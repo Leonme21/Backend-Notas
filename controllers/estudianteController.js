@@ -56,3 +56,21 @@ exports.actualizarNotas = async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar las notas' });
   }
 };
+
+// 4. Buscar estudiante por nombre
+// Buscar por nombre (Query Params)
+exports.listarEstudiantes = async (req, res) => {
+  try {
+    const { nombre } = req.query;
+
+    if (nombre) {
+      const estudiantes = await Estudiante.getByName(nombre);
+      return res.json(estudiantes);
+    }
+
+    // Si no hay nombre, podríamos devolver todos (opcional)
+    res.json([]);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al buscar estudiantes por nombre' });
+  }
+};

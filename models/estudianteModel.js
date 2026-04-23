@@ -12,7 +12,20 @@ const Estudiante = {
     return rows[0];
   },
 
-    // Obtener estudiante con su materia y notas (Para Pantalla 1 y 3)
+  getByName: async (nombre) => {
+    const query = `
+      SELECT e.nombre, e.cedula, m.nombre as materia, n.nota1, n.nota2, n.nota3, n.nota4, n.definitiva
+      FROM estudiantes e
+      JOIN notas n ON e.id = n.estudiante_id
+      JOIN materias m ON n.materia_id = m.id
+      WHERE e.nombre ILIKE $1
+    `;
+    // El % permite buscar nombres que "contengan" el texto
+    const { rows } = await pool.query(query, [`%${nombre}%`]);
+    return rows;
+  },
+
+  // Obtener estudiante con su materia y notas (Para Pantalla 1 y 3)
   getByCedula: async (cedula) => {
     const query = `
       SELECT e.nombre, e.cedula, m.nombre as materia, n.nota1, n.nota2, n.nota3, n.nota4, n.definitiva
