@@ -50,16 +50,13 @@ const Estudiante = {
   updateNotas: async (cedula, notas) => {
     const { nota1, nota2, nota3, nota4 } = notas;
 
-    // Calculamos la definitiva (promedio)
-    const definitiva = (parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) + parseFloat(nota4)) / 4;
-
     const query = `
       UPDATE notas 
-      SET nota1 = $1, nota2 = $2, nota3 = $3, nota4 = $4, definitiva = $5
-      WHERE estudiante_id = (SELECT id FROM estudiantes WHERE cedula = $6)
+      SET nota1 = $1, nota2 = $2, nota3 = $3, nota4 = $4
+      WHERE estudiante_id = (SELECT id FROM estudiantes WHERE cedula = $5)
       RETURNING *;
     `;
-    const { rows } = await pool.query(query, [nota1, nota2, nota3, nota4, definitiva, cedula]);
+    const { rows } = await pool.query(query, [nota1, nota2, nota3, nota4, cedula]);
     return rows[0];
   },
 

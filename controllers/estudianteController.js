@@ -39,16 +39,17 @@ exports.actualizarNotas = async (req, res) => {
   try {
     const { cedula } = req.params;
     const { nota1, nota2, nota3, nota4 } = req.body;
-
     const notasActualizadas = await Estudiante.updateNotas(cedula, { nota1, nota2, nota3, nota4 });
-
     if (!notasActualizadas) {
       return res.status(404).json({ error: 'No se pudo actualizar, verifique la cédula' });
     }
-
     res.json({ message: 'Notas actualizadas con éxito', notas: notasActualizadas });
   } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar las notas' });
+    // LOG
+    res.status(500).json({
+      error: 'Error al actualizar las notas',
+      detalles: error.message
+    });
   }
 };
 
