@@ -38,6 +38,14 @@ const Estudiante = {
     return rows[0];
   },
 
+  // Obtener todas las materias disponibles (FALTABA ESTA)
+  getAllMaterias: async () => {
+    const query = 'SELECT nombre FROM materias ORDER BY nombre ASC';
+    const { rows } = await pool.query(query);
+    return rows;
+  },
+
+
 
   // Actualizar las notas de un estudiante
   updateNotas: async (cedula, notas) => {
