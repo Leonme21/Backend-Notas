@@ -86,4 +86,7 @@ router.get('/:cedula', estudianteController.obtenerEstudiante);
  */
 router.put('/notas/:cedula', estudianteController.actualizarNotas);
 
+// Ruta para que la App móvil sepa qué materias existen
+router.get('/config/materias', estudianteController.obtenerMaterias);
+
 module.exports = router;

@@ -1,41 +1,36 @@
 const Estudiante = require('../models/estudianteModel');
+const pool = require('../config/db');
 
 // 1. Registrar Estudiante
 exports.registrarEstudiante = async (req, res) => {
+  const client = await pool.connect();
+
   try {
     const { cedula, nombre, correo, celular, materia } = req.body;
-    const nuevoEstudiante = await Estudiante.create(cedula, nombre, correo, celular);
+    // 1. PRIMERO validamos si la materia existe
     const materiaEncontrada = await Estudiante.findMateriaByName(materia);
-
     if (!materiaEncontrada) {
-      return res.status(404).json({ error: 'La materia especificada no existe' });
+      return res.status(400).json({ error: `La materia '${materia}' no existe en el sistema.` });
     }
-
+    // 2. Iniciamos la transacción
+    await client.query('BEGIN');
+    // 3. Crear el estudiante
+    const nuevoEstudiante = await Estudiante.create(cedula, nombre, correo, celular);
+    // 4. Asignar la materia
     await Estudiante.asignarMateria(nuevoEstudiante.id, materiaEncontrada.id);
-
+    // 5. Si todo salió bien, confirmamos los cambios
+    await client.query('COMMIT');
     res.status(201).json({
-      message: 'Estudiante registrado y materia asignada con éxito',
+      message: 'Estudiante registrado con éxito',
       estudiante: nuevoEstudiante
     });
   } catch (error) {
+    // Si algo falló, deshacemos todo lo que se alcanzó a hacer
+    await client.query('ROLLBACK');
     console.error(error);
-    res.status(500).json({ error: 'Error al registrar el estudiante' });
-  }
-};
-
-// 2. Buscar estudiante por cédula
-exports.obtenerEstudiante = async (req, res) => {
-  try {
-    const { cedula } = req.params;
-    const estudiante = await Estudiante.getByCedula(cedula);
-
-    if (!estudiante) {
-      return res.status(404).json({ error: 'Estudiante no encontrado' });
-    }
-
-    res.json(estudiante);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al buscar el estudiante' });
+    res.status(500).json({ error: 'Error al registrar. Verifica si la cédula ya existe.' });
+  } finally {
+    client.release(); // Liberamos la conexión
   }
 };
 
@@ -72,5 +67,14 @@ exports.listarEstudiantes = async (req, res) => {
     res.json([]);
   } catch (error) {
     res.status(500).json({ error: 'Error al buscar estudiantes por nombre' });
+  }
+};
+
+exports.obtenerMaterias = async (req, res) => {
+  try {
+    const materias = await Estudiante.getAllMaterias();
+    res.json(materias);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener materias' });
   }
 };
