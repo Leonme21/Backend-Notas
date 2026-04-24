@@ -23,11 +23,15 @@
           {
             "name": "nombre",
             "in": "query",
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": { "description": "Lista de estudiantes" }
+          "200": {
+            "description": "Lista de estudiantes"
+          }
         }
       },
       "post": {
@@ -39,18 +43,30 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "cedula": { "type": "string" },
-                  "nombre": { "type": "string" },
-                  "correo": { "type": "string" },
-                  "celular": { "type": "string" },
-                  "materia": { "type": "string" }
+                  "cedula": {
+                    "type": "string"
+                  },
+                  "nombre": {
+                    "type": "string"
+                  },
+                  "correo": {
+                    "type": "string"
+                  },
+                  "celular": {
+                    "type": "string"
+                  },
+                  "materia": {
+                    "type": "string"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Creado" }
+          "201": {
+            "description": "Creado"
+          }
         }
       }
     },
@@ -62,12 +78,18 @@
             "name": "cedula",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": { "description": "Datos del estudiante" },
-          "404": { "description": "No encontrado" }
+          "200": {
+            "description": "Datos del estudiante"
+          },
+          "404": {
+            "description": "No encontrado"
+          }
         }
       }
     },
@@ -79,7 +101,9 @@
             "name": "cedula",
             "in": "path",
             "required": true,
-            "schema": { "type": "string" }
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -89,17 +113,27 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "nota1": { "type": "number" },
-                  "nota2": { "type": "number" },
-                  "nota3": { "type": "number" },
-                  "nota4": { "type": "number" }
+                  "nota1": {
+                    "type": "number"
+                  },
+                  "nota2": {
+                    "type": "number"
+                  },
+                  "nota3": {
+                    "type": "number"
+                  },
+                  "nota4": {
+                    "type": "number"
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "200": { "description": "Notas actualizadas" }
+          "200": {
+            "description": "Notas actualizadas"
+          }
         }
       }
     },
@@ -107,7 +141,9 @@
       "get": {
         "summary": "Obtiene la lista de materias disponibles",
         "responses": {
-          "200": { "description": "Lista de materias" }
+          "200": {
+            "description": "Lista de materias"
+          }
         }
       }
     }

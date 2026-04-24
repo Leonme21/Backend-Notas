@@ -1,7 +1,7 @@
 const Estudiante = require('../models/estudianteModel');
 const pool = require('../config/db');
 
-// 1. Obtener todas las materias (Para el App Móvil)
+// 1. Obtener todas las materias 
 exports.obtenerMaterias = async (req, res, sendJSON) => {
   try {
     const materias = await Estudiante.getAllMaterias();
@@ -11,7 +11,7 @@ exports.obtenerMaterias = async (req, res, sendJSON) => {
   }
 };
 
-// 2. Registrar Estudiante (Con Transacción Nativa)
+// 2. Registrar Estudiante 
 exports.registrarEstudiante = async (req, res, sendJSON) => {
   const { cedula, nombre, correo, celular, materia } = req.body;
   const client = await pool.connect();
@@ -49,7 +49,7 @@ exports.registrarEstudiante = async (req, res, sendJSON) => {
   }
 };
 
-// 3. Buscar estudiante por nombre (ILIKE)
+// 3. Buscar estudiante por nombre 
 exports.listarEstudiantes = async (req, res, sendJSON) => {
   try {
     const { nombre } = req.query;
