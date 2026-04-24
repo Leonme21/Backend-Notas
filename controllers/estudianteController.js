@@ -70,6 +70,23 @@ exports.listarEstudiantes = async (req, res) => {
   }
 };
 
+// Buscar estudiante por cédula (Esta es la que falta)
+exports.obtenerEstudiante = async (req, res) => {
+  try {
+    const { cedula } = req.params;
+    const estudiante = await Estudiante.getByCedula(cedula);
+
+    if (!estudiante) {
+      return res.status(404).json({ error: 'Estudiante no encontrado' });
+    }
+
+    res.json(estudiante);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al buscar el estudiante' });
+  }
+};
+
+
 exports.obtenerMaterias = async (req, res) => {
   try {
     const materias = await Estudiante.getAllMaterias();
