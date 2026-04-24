@@ -1,0 +1,115 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Notas Universitarias (Agnóstica)",
+    "version": "1.0.0",
+    "description": "Documentación de la API nativa para gestión de estudiantes y notas"
+  },
+  "servers": [
+    {
+      "url": "https://backend-notas-5c06.onrender.com",
+      "description": "Servidor en la Nube (Render)"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor Local"
+    }
+  ],
+  "paths": {
+    "/api/estudiantes": {
+      "get": {
+        "summary": "Busca estudiantes por nombre",
+        "parameters": [
+          {
+            "name": "nombre",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de estudiantes" }
+        }
+      },
+      "post": {
+        "summary": "Registra un nuevo estudiante",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cedula": { "type": "string" },
+                  "nombre": { "type": "string" },
+                  "correo": { "type": "string" },
+                  "celular": { "type": "string" },
+                  "materia": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Creado" }
+        }
+      }
+    },
+    "/api/estudiantes/{cedula}": {
+      "get": {
+        "summary": "Obtiene información de un estudiante por cédula",
+        "parameters": [
+          {
+            "name": "cedula",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Datos del estudiante" },
+          "404": { "description": "No encontrado" }
+        }
+      }
+    },
+    "/api/estudiantes/notas/{cedula}": {
+      "put": {
+        "summary": "Actualiza las notas de un estudiante",
+        "parameters": [
+          {
+            "name": "cedula",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nota1": { "type": "number" },
+                  "nota2": { "type": "number" },
+                  "nota3": { "type": "number" },
+                  "nota4": { "type": "number" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Notas actualizadas" }
+        }
+      }
+    },
+    "/api/estudiantes/config/materias": {
+      "get": {
+        "summary": "Obtiene la lista de materias disponibles",
+        "responses": {
+          "200": { "description": "Lista de materias" }
+        }
+      }
+    }
+  }
+}
