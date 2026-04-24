@@ -92,7 +92,6 @@ exports.obtenerMaterias = async (req, res) => {
     const materias = await Estudiante.getAllMaterias();
     res.json(materias);
   } catch (error) {
-    // Esto nos dirá en el navegador el error real (ej: "table materias does not exist")
     res.status(500).json({
       error: 'Error al obtener materias',
       detalles: error.message

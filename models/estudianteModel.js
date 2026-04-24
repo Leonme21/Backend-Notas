@@ -46,20 +46,23 @@ const Estudiante = {
   },
 
 
-
   // Actualizar las notas de un estudiante
   updateNotas: async (cedula, notas) => {
     const { nota1, nota2, nota3, nota4 } = notas;
-    // Buscamos primero el ID del estudiante por su cédula
+
+    // Calculamos la definitiva (promedio)
+    const definitiva = (parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) + parseFloat(nota4)) / 4;
+
     const query = `
       UPDATE notas 
-      SET nota1 = $1, nota2 = $2, nota3 = $3, nota4 = $4
-      WHERE estudiante_id = (SELECT id FROM estudiantes WHERE cedula = $5)
+      SET nota1 = $1, nota2 = $2, nota3 = $3, nota4 = $4, definitiva = $5
+      WHERE estudiante_id = (SELECT id FROM estudiantes WHERE cedula = $6)
       RETURNING *;
     `;
-    const { rows } = await pool.query(query, [nota1, nota2, nota3, nota4, cedula]);
+    const { rows } = await pool.query(query, [nota1, nota2, nota3, nota4, definitiva, cedula]);
     return rows[0];
   },
+
 
 
   // Busca una materia por nombre para obtener su ID
