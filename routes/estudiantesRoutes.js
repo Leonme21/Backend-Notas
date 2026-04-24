@@ -2,6 +2,43 @@ const express = require('express');
 const router = express.Router();
 const estudianteController = require('../controllers/estudianteController');
 
+
+// Ruta para que la App móvil sepa qué materias existen
+router.get('/config/materias', estudianteController.obtenerMaterias);
+
+/**
+ * @swagger
+ * /api/estudiantes:
+ *   get:
+ *     summary: Busca estudiantes por nombre usando query params (?nombre=...)
+ *     tags: [Estudiantes]
+ *     parameters:
+ *       - in: query
+ *         name: nombre
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de estudiantes encontrados
+ */
+router.get('/', estudianteController.listarEstudiantes);
+
+/**
+ * @swagger
+ * /api/estudiantes/{cedula}:
+ *   get:
+ *     summary: Obtiene información y notas del estudiante
+ *     tags: [Estudiantes]
+ *     parameters:
+ *       - in: path
+ *         name: cedula
+ *         required: true
+ *         schema: {type: string}
+ *     responses:
+ *       200: {description: Éxito}
+ */
+router.get('/:cedula', estudianteController.obtenerEstudiante);
+
 /**
  * @swagger
  * /api/estudiantes:
@@ -25,39 +62,6 @@ const estudianteController = require('../controllers/estudianteController');
  */
 router.post('/', estudianteController.registrarEstudiante);
 
-/**
- * @swagger
- * /api/estudiantes:
- *   get:
- *     summary: Busca estudiantes por nombre usando query params (?nombre=...)
- *     tags: [Estudiantes]
- *     parameters:
- *       - in: query
- *         name: nombre
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Lista de estudiantes encontrados
- */
-router.get('/', estudianteController.listarEstudiantes);
-
-
-/**
- * @swagger
- * /api/estudiantes/{cedula}:
- *   get:
- *     summary: Obtiene información y notas del estudiante
- *     tags: [Estudiantes]
- *     parameters:
- *       - in: path
- *         name: cedula
- *         required: true
- *         schema: {type: string}
- *     responses:
- *       200: {description: Éxito}
- */
-router.get('/:cedula', estudianteController.obtenerEstudiante);
 
 /**
  * @swagger
@@ -85,8 +89,5 @@ router.get('/:cedula', estudianteController.obtenerEstudiante);
  *       200: {description: Éxito}
  */
 router.put('/notas/:cedula', estudianteController.actualizarNotas);
-
-// Ruta para que la App móvil sepa qué materias existen
-router.get('/config/materias', estudianteController.obtenerMaterias);
 
 module.exports = router;
